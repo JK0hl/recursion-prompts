@@ -2,25 +2,53 @@
 
 // Solve the following prompts using recursion.
 
+//For this prompt, we'll need to use the Recursive Unknown Number of Nested Object pattern (#3, #22, #23, #24
+
 // 1. Calculate the factorial of a number. The factorial of a non-negative integer n,
 // denoted by n!, is the product of all positive integers less than or equal to n.
 // Example: 5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5); // 120
 var factorial = function(n) {
+
+  if (n < 0) {
+    return null;
+  };
+
+  if (n === 0) {
+    return 1;
+  };
+
+  return (n * factorial(n -1));
 };
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
 var sum = function(array) {
+
 };
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
 var arraySum = function(array) {
+  // //store sum result
+  var result = 0;
+
+  var innerFunction = function(item) {
+    if (!Array.isArray(item)) {
+      result += item;
+    };
+    for (var i = 0; i < item.length; i++) {
+      innerFunction(item[i]);
+    };
+  };
+  innerFunction(array);
+  return result;
 };
 
 // 4. Check if a number is even.
 var isEven = function(n) {
+
+
 };
 
 // 5. Sum all integers below a given integer.
@@ -128,7 +156,38 @@ var rMap = function(array, callback) {
 // var obj = {'e':{'x':'y'},'t':{'r':{'e':'r'},'p':{'y':'r'}},'y':'e'};
 // countKeysInObj(obj, 'r') // 1
 // countKeysInObj(obj, 'e') // 2
+
 var countKeysInObj = function(obj, key) {
+  //container return variable
+  var result = 0;
+
+  //inner recursive function
+  var inner = function(obj, key){
+
+    //terminal condition
+    // if (typeof obj !== 'object') {
+    //   return;
+    // }
+    //base case
+    // if (obj[key] !== undefined) {
+    //   result++;
+    // };
+
+    //recursive condition
+    for (var item in obj) {
+      if (item === key) {
+        result++;
+      };
+
+      if (typeof obj[item] === 'object') {
+         inner(obj[item], key);
+      };
+    }
+  };
+  inner(obj, key);
+
+
+  return result;
 };
 
 // 23. Write a function that counts the number of times a value occurs in an object.
@@ -136,11 +195,48 @@ var countKeysInObj = function(obj, key) {
 // countValuesInObj(obj, 'r') // 2
 // countValuesInObj(obj, 'e') // 1
 var countValuesInObj = function(obj, value) {
+    //container return variable
+    var result = 0;
+
+    //inner recursive function
+    var inner = function(obj, value){
+
+      //recursive condition
+      for (var item in obj) {
+        if (obj[item] === value) {
+          result++;
+        };
+        if (typeof obj[item] === 'object') {
+           inner(obj[item], value);
+        };
+      }
+    };
+    inner(obj, value);
+
+    return result;
 };
 
 // 24. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, oldKey, newKey) {
+
+  var inner = function(obj, oldKey, newKey){
+
+    if (typeof obj === 'object') {
+
+      for (var item in obj) {
+
+        if (item === oldKey && item !== undefined) {
+          obj[newKey] = obj[oldKey];
+          delete obj[[oldKey]];
+        };
+        inner(obj[item], oldKey, newKey);
+      }
+    }
+  };
+  inner(obj, oldKey, newKey);
+
+  return obj;
 };
 
 // 25. Get the first n Fibonacci numbers. In the Fibonacci sequence, each subsequent

@@ -187,6 +187,7 @@
       it('should use recursion by calling self', function() {
         arraySum([[1],[[2]],3,4]);
         expect(arraySum.callCount).to.be.above(1);
+        console.log(arraySum.callCount);
       });
 
       it('should be invoked with one argument', function() {
